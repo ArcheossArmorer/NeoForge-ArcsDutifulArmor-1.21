@@ -1,5 +1,8 @@
 package net.archeoss.arcsdutifularmor;
 
+import net.archeoss.arcsdutifularmor.item.ModItems;
+import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.CreativeModeTabs;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
@@ -24,6 +27,7 @@ public class ArcsDutifulArmor {
     public static final String MOD_ID = "arcsdutifularmor";
     // Directly reference a slf4j logger
     public static final Logger LOGGER = LogUtils.getLogger();
+
     // The constructor for the mod class is the first code that is run when your mod is loaded.
     // FML will recognize some parameter types like IEventBus or ModContainer and pass them in automatically.
     public ArcsDutifulArmor(IEventBus modEventBus, ModContainer modContainer) {
@@ -34,6 +38,8 @@ public class ArcsDutifulArmor {
         // Note that this is necessary if and only if we want *this* class (ExampleMod) to respond directly to events.
         // Do not add this line if there are no @SubscribeEvent-annotated functions in this class, like onServerStarting() below.
         NeoForge.EVENT_BUS.register(this);
+
+        ModItems.register(modEventBus);
 
         // Register the item to a creative tab
         modEventBus.addListener(this::addCreative);
@@ -48,7 +54,10 @@ public class ArcsDutifulArmor {
 
     // Add the example block item to the building blocks tab
     private void addCreative(BuildCreativeModeTabContentsEvent event) {
-
+        if(event.getTabKey() == CreativeModeTabs.INGREDIENTS) {
+            event.accept(ModItems.AWESOMEITEM);
+            event.accept((ModItems.RAW_TAZURINE));
+        }
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call
